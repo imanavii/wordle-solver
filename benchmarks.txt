@@ -1,0 +1,87 @@
+=================================================================
+             WORDLE SOLVER - ALGORITHM BENCHMARK
+=================================================================
+
+---Iternation 1----
+
+Dictionary size: 14,855 words
+Timing repetitions: 5
+Times shown are median execution times.
+
+-----------------------------------------------------------------
+1. KNOWN POSITIONS | Pattern: _a_e_
+-----------------------------------------------------------------
+Naive search                 15.551 ms | Operations: 14,855
+Trie search                   0.224 ms | Operations: 1,256
+Matching result sets: PASS
+Relative speed: 69.52x
+
+-----------------------------------------------------------------
+2. REQUIRED LETTERS | Letters: ae
+-----------------------------------------------------------------
+Naive search                 14.244 ms | Operations: 14,855
+Hash search                   1.089 ms | Operations: 1,955
+Matching result sets: PASS
+Relative speed: 13.08x
+
+-----------------------------------------------------------------
+3. EXCLUDED LETTERS | Letters: xyz
+-----------------------------------------------------------------
+Naive search                 14.270 ms | Operations: 14,855
+Hash search                   2.798 ms | Operations: 11,829
+Matching result sets: PASS
+Relative speed: 5.10x
+
+-----------------------------------------------------------------
+4. COMBINED SEARCH | Pattern: _a_e_, Required: r, Excluded: st
+-----------------------------------------------------------------
+Reference scan               17.046 ms | Operations: 14,855
+Combined search              16.975 ms | Operations: 14,855
+Matching result sets: PASS
+Relative speed: 1.00x
+
+=================================================================
+FINAL RESULT
+=================================================================
+PASS: All algorithms returned matching result sets.
+
+
+
+
+---ITERATION 2---- CombiSearch improved
+
+Dictionary size: 14,855 words
+Timing repetitions: 5
+Times shown are median execution times.
+
+-----------------------------------------------------------------
+1. KNOWN POSITIONS | Pattern: _a_e_
+-----------------------------------------------------------------
+Naive search                 15.285 ms | Operations: 14,855
+Trie search                   0.246 ms | Operations: 1,256
+Matching result sets: PASS
+Relative speed: 62.26x
+
+-----------------------------------------------------------------
+2. REQUIRED LETTERS | Letters: ae
+-----------------------------------------------------------------
+Naive search                 13.086 ms | Operations: 14,855
+Hash search                   1.147 ms | Operations: 1,955
+Matching result sets: PASS
+Relative speed: 11.41x
+
+-----------------------------------------------------------------
+3. EXCLUDED LETTERS | Letters: xyz
+-----------------------------------------------------------------
+Naive search                 14.201 ms | Operations: 14,855
+Hash search                   2.626 ms | Operations: 11,829
+Matching result sets: PASS
+Relative speed: 5.41x
+
+-----------------------------------------------------------------
+4. COMBINED SEARCH | Pattern: _a_e_, Required: r, Excluded: st
+-----------------------------------------------------------------
+Reference scan               17.906 ms | Operations: 14,855
+Combined search               0.298 ms | Operations: 118
+Matching result sets: PASS
+Relative speed: 60.07x

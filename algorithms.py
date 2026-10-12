@@ -281,31 +281,83 @@ def timed_search(search_function, *args, **kwargs):
 
 def combined_search(
     dictionary,
-    pattern,
-    required_letters,
-    excluded_letters
+    pattern="",
+    required_letters="",
+    excluded_letters="",
 ):
-    """Find words satisfying all three constraints."""
+    """Combine positional, required-letter, and excluded-letter filters."""
 
-    results = []
-    candidates_examined = 0
+    import string
 
-    for word in dictionary.words:
-        candidates_examined += 1
+    # Normalize inputs
+    pattern = (pattern or "").strip().lower()
+    required_letters = (required_letters or "").replace(",", "").replace(" ", "").lower()
+    excluded_letters = (excluded_letters or "").replace(",", "").replace(" ", "").lower()
 
-        if matches_constraints(
-            word,
-            "position",
-            pattern=pattern
-        ) and matches_constraints(
-            word,
-            "required",
-            required_letters=required_letters
-        ) and matches_constraints(
-            word,
-            "excluded",
-            excluded_letters=excluded_letters
+    # Validate pattern
+    if pattern:
+        if len(pattern) != WORD_LENGTH:
+            raise ValueError("Pattern must contain exactly five characters.")
+
+        if any(
+            char != "_" and char not in string.ascii_lowercase
+            for char in pattern
         ):
-            results.append(word)
+            raise ValueError("Use letters and underscores only.")
+
+    # Validate letter inputs
+    for letters, label in (
+        (required_letters, "Required"),
+        (excluded_letters, "Excluded"),
+    ):
+        if letters and (
+            not letters.isascii()
+            or not letters.isalpha()
+        ):
+            raise ValueError(f"{label} letters must contain English letters only.")
+
+    if not pattern and not required_letters and not excluded_letters:
+        raise ValueError("Enter at least one search constraint.")
+
+    # Start with the smallest available candidate set.
+    candidate_sets = []
+
+    # Positional constraint: use the Trie.
+    if pattern:
+        positional_results, _ = dictionary.trie.search_pattern(pattern)
+        candidate_sets.append(set(positional_results))
+
+    # Required letters: intersect their indexed word sets.
+    for letter in set(required_letters):
+        candidate_sets.append(dictionary.letter_index.get(letter, set()))
+
+    # Begin with the smallest candidate set, or all words if no
+    # positive constraint was provided.
+    if candidate_sets:
+        candidate_sets.sort(key=len)
+        candidates = set(candidate_sets[0])
+
+        for candidate_set in candidate_sets[1:]:
+            candidates.intersection_update(candidate_set)
+
+            if not candidates:
+                break
+    else:
+        candidates = set(dictionary.words)
+
+    # Excluded letters: remove words containing any excluded letter.
+    for letter in set(excluded_letters):
+        candidates.difference_update(
+            dictionary.letter_index.get(letter, set())
+        )
+
+        if not candidates:
+            break
+
+    results = sorted(candidates)
+
+    # Report the number of words remaining after positive filters.
+    # This is a candidate count, not a count of Trie node visits.
+    candidates_examined = len(results)
 
     return results, candidates_examined

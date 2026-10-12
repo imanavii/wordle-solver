@@ -1,0 +1,6 @@
+
+Algorithm,Reference Runtime (ms),Optimized Runtime (ms),Initial Metrics,Speedup,Correctness
+Known positions,15.285,0.246,69.52x,62.26x,PASS
+Required letters,13.086,1.147,13.08x,11.41x,PASS
+Excluded letters,14.201,2.626,5.31x,5.41x,PASS
+Combined search,17.906,0.298,1.00x,60.07x,PASS
