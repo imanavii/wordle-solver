@@ -43,7 +43,33 @@ wordle-solver/
 
 Clone or download the repository, then open a terminal in the project directory.
 
-Run the solver:
+
+### Dictionary Setup
+
+The dictionary file is not included in this repository. Download it before running the application.
+
+**Windows (PowerShell)**
+
+From the project root directory, run:
+
+```powershell
+New-Item -ItemType Directory -Force data
+Invoke-WebRequest `
+  -Uri "https://raw.githubusercontent.com/tabatkins/wordle-list/main/words" `
+  -OutFile "data/words.txt"
+```
+
+**macOS / Linux**
+
+From the project root directory, run:
+
+```bash
+mkdir -p data
+curl -L "https://raw.githubusercontent.com/tabatkins/wordle-list/main/words" \
+  -o data/words.txt
+```
+
+After downloading the dictionary, run the solver:
 
 ```bash
 python main.py
@@ -54,6 +80,8 @@ Run the benchmark suite:
 ```bash
 python benchmark.py
 ```
+The application loads the local dictionary and filters it to unique, valid five-letter English-letter entries.
+
 
 The dictionary must be available at `data/words.txt`. If it is missing, the application will report an error.
 

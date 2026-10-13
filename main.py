@@ -155,7 +155,7 @@ def run_solver(dictionary):
                 excluded,
             )
 
-            print(f"Candidates examined: {candidates_examined}")
+            print(f"Candidates: {candidates_examined}")
             display_results(results)
 
             # Ask what to do after every search.
