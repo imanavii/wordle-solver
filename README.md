@@ -43,7 +43,6 @@ wordle-solver/
 
 Clone or download the repository, then open a terminal in the project directory.
 
-
 ### Dictionary Setup
 
 The dictionary file is not included in this repository. Download it before running the application.
@@ -84,6 +83,7 @@ The application loads the local dictionary and filters it to unique, valid five-
 
 
 The dictionary must be available at `data/words.txt`. If it is missing, the application will report an error.
+
 
 ## How to Use
 
